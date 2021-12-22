@@ -1,30 +1,30 @@
 /*
-12.1~12.15 12.12品牌礼遇 天降惊喜 [jd_opencardLL6.js]
-新增开卡脚本
-一次性脚本
+12.20~1.5 双旦寻宝 玩转大富翁 [jd_opencardLH32.js]
+开卡脚本,一次性脚本
 
-1.邀请一人20豆
+1.邀请一人5豆
 2.开9张卡 成功开1张 获得10豆
-  开通所有可抽奖1次 可能获得5/888京豆
-3.关注10豆 
+  开通所有可抽奖1次 可能获得5/10/888京豆
+3.关注5豆 
+4.抽奖 
 
 第一个账号助力作者 其他依次助力CK1
 第一个CK失效会退出脚本
 ————————————————
-入口：[ 12.1~12.15 12.12品牌礼遇 天降惊喜 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=dd20211201ymh096ry73i6s80&shareUuid=0f88103a53bf4caf8152cc7936df4d7c)]
+入口：[ 12.20~1.5 双旦寻宝 玩转大富翁 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=dfw2021121702rics9xrkw5mpka&shareUuid=610ce07c9b244613ae01ac105dd4038a)]
 
 请求太频繁会被黑ip
 过10分钟再执行
 
-cron:17 3,17 1-15 12 *
+cron:30 0,18 21-31,2-5 12,1 *
 ============Quantumultx===============
 [task_local]
-#12.1~12.15 12.12品牌礼遇 天降惊喜
-17 3,17 1-15 12 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardLL6.js, tag=12.1~12.15 12.12品牌礼遇 天降惊喜, enabled=true
+#12.20~1.5 双旦寻宝 玩转大富翁
+30 0,18 21-31,2-5 12,1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardLH32.js, tag=12.20~1.5 双旦寻宝 玩转大富翁, enabled=true
 
 */
 
-const $ = new Env('12.1~12.15 12.12品牌礼遇 天降惊喜');
+const $ = new Env('12.20~1.5 双旦寻宝 玩转大富翁-1');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
@@ -39,6 +39,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
+
 allMessage = ""
 message = ""
 $.hotFlag = false
@@ -53,8 +54,8 @@ let activityCookie =''
     });
     return;
   }
-  $.activityId = "dd202112054tv7ur9e458rmdh"
-  $.shareUuid = "0f88103a53bf4caf8152cc7936df4d7c"
+  $.activityId = "dfw2021121702rics9xrkw5mpka"
+  $.shareUuid = "610ce07c9b244613ae01ac105dd4038a"
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
 
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -122,8 +123,6 @@ async function run() {
       console.log('获取不到[actorUuid]退出执行，请重新执行')
       return
     }
-    // console.log($.actorUuid)
-    // return
     if($.hasEnd === true || Date.now() > $.endTime){
       $.activityEnd = true
       console.log('活动结束')
@@ -134,6 +133,8 @@ async function run() {
     $.openList = []
     $.allOpenCard = false
     await takePostRequest('checkOpenCard');
+    // console.log($.actorUuid)
+    // return
     if($.allOpenCard == false){
       console.log('开卡任务')
       for(o of $.openList){
@@ -171,20 +172,20 @@ async function run() {
       await takePostRequest('activityContent');
     }
     console.log(`${$.score}值 游戏:${$.point}`)
-    $.runFalag = true
-    let count = parseInt($.score/1000)
-    console.log(`抽奖次数为:${count}`)
-    for(m=1;count--;m++){
+      $.runFalag = true
+      let count = parseInt($.score/1000)
+      console.log(`抽奖次数为:${count}`)
+      for(m=1;count--;m++){
         console.log(`第${m}次抽奖`)
         await takePostRequest('抽奖');
         if($.runFalag == false) break
         if(Number(count) <= 0) break
         if(m >= 10){
-            console.log("抽奖太多次，多余的次数请再执行脚本")
-            break
+          console.log("抽奖太多次，多余的次数请再执行脚本")
+          break
         }
         await $.wait(parseInt(Math.random() * 2000 + 2000, 10))
-    }
+      }
     
     await $.wait(parseInt(Math.random() * 1000 + 2000, 10))
     await takePostRequest('getDrawRecordHasCoupon');
@@ -239,7 +240,7 @@ async function takePostRequest(type) {
         body = `pin=${encodeURIComponent($.Pin)}`;
         break;
       case 'activityContent':
-        url = `${domain}/joint/order/getContent`;
+        url = `${domain}/play/monopoly/getContent`;
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&pinImg=${encodeURIComponent($.attrTouXiang)}&nick=${encodeURIComponent($.nickname)}&cjyxPin=&cjhyPin=&shareUuid=${$.shareUuid}`
         break;
       case 'drawContent':
@@ -247,19 +248,19 @@ async function takePostRequest(type) {
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}`
         break;
       case 'checkOpenCard':
-        url = `${domain}/joint/order/checkOpenCard`;
+        url = `${domain}/play/monopoly/checkOpenCard`;
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}`
         break;
       case 'info':
-        url = `${domain}/joint/order/getTaskList`;
+        url = `${domain}/play/monopoly/getTaskList`;
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}`
         break;
       case 'startDraw':
-        url = `${domain}/joint/order/draw`;
+        url = `${domain}/play/monopoly/activeDraw`;
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&drawType=1`
         break;
       case 'followShop':
-        url = `${domain}/joint/order/doTasks`;
+        url = `${domain}/play/monopoly/doTasks`;
         // url = `${domain}/dingzhi/dz/openCard/saveTask`;
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&taskType=1`
         break;
@@ -273,9 +274,9 @@ async function takePostRequest(type) {
       case '邀请':
       case '助力':
         if(type == '助力'){
-          url = `${domain}/joint/order/getAssistStatus`;
+          url = `${domain}/play/monopoly/getAssistStatus`;
         }else{
-          url = `${domain}/joint/order/assist`;
+          url = `${domain}/play/monopoly/assist`;
         }
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&shareUuid=${$.shareUuid}&actorUuid=${$.actorUuid}`
         break;
@@ -302,15 +303,15 @@ async function takePostRequest(type) {
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&taskType=${taskType}&taskValue=${taskValue}`
         break;
       case 'getDrawRecordHasCoupon':
-        url = `${domain}/dingzhi/linkgame/draw/record`;
+        url = `${domain}/play/monopoly/getPrizeList`;
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}`
         break;
       case 'getShareRecord':
-        url = `${domain}/dingzhi/linkgame/help/list`;
-        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}`
+        url = `${domain}/play/monopoly/getHelpList`;
+        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}`
         break;
       case '抽奖':
-        url = `${domain}/joint/order/draw`;
+        url = `${domain}/play/monopoly/activeDraw`;
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&drawType=2`
         break;
       default:
@@ -528,18 +529,19 @@ async function dealReturn(type, data) {
         }
         break;
       case 'getDrawRecordHasCoupon':
+        // console.log(data)
         if(typeof res == 'object'){
           if(res.result && res.result === true){
             console.log(`我的奖品：`)
             let num = 0
             let value = 0
-            for(let i in res.data.recordList){
-              let item = res.data.recordList[i]
-              if(item.infoName == '20京豆'){
+            for(let i in res.data){
+              let item = res.data[i]
+              if(item.drawId == 'assist'){
                 num++
                 value = item.infoName.replace('京豆','')
               }else{
-                console.log(`${item.infoType != 10 && item.value && item.value +':' || ''}${item.infoName}`)
+                console.log(`${item.infoType != 10 && item.drawId && item.drawId +':' || ''}${item.infoName}`)
               }
             }
             if(num > 0) console.log(`邀请好友(${num}):${num*parseInt(value, 10) || 30}京豆`)
@@ -555,8 +557,8 @@ async function dealReturn(type, data) {
       case 'getShareRecord':
         if(typeof res == 'object'){
           if(res.result && res.result === true && res.data){
-            $.ShareCount = res.data.shareList.length
-            $.log(`=========== 你邀请了:${res.data.shareList.length}个`)
+            $.ShareCount = res.data.length
+            $.log(`=========== 你邀请了:${res.data.length}个`)
           }else if(res.errorMessage){
             console.log(`${type} ${res.errorMessage || ''}`)
           }else{

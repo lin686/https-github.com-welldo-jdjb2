@@ -16,8 +16,12 @@ export JD_TRY_MAXLENGTH="50" #商品数组的最大长度
 export JD_TRY_APPLYINTERVAL="5000" #商品试用之间和获取商品之间的间隔
 export JD_TRY_APPLYNUMFILTER="500000" #过滤大于设定值的已申请人数
 export JD_TRY_MINSUPPLYNUM="1" #最小提供数量
+<<<<<<< HEAD
 export JD_TRY_TABID="1@2@3@4@5"
 export JD_TRY_SENDNUM="2" #每隔多少账号发送一次通知，不需要可以不用设置
+=======
+export JD_TRY_SENDNUM="10" #每隔多少账号发送一次通知，不需要可以不用设置
+>>>>>>> 4a770a870b7cdf2e22eb7378ef2201e2d7d559df
 cron "4 1-22/8 * * *" jd_try.js, tag:京东试用
 
  */
@@ -157,7 +161,7 @@ let args_xh = {
 }
 //上面很重要，遇到问题请把上面注释看一遍再来问
 !(async() => {
-     await $.wait(500)
+    await $.wait(500)
     // 如果你要运行京东试用这个脚本，麻烦你把环境变量 JD_TRY 设置为 true
     if(process.env.JD_TRY && process.env.JD_TRY === 'true'){
         await requireConfig()

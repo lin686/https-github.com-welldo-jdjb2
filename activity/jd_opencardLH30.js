@@ -1,5 +1,5 @@
 /*
-12.20~1.5 双旦寻宝 玩转大富翁 [jd_opencardLH31.js]
+12.17~1.3 双旦寻宝 玩转大富翁 [jd_opencardLH30.js]
 开卡脚本,一次性脚本
 
 1.邀请一人5豆
@@ -11,20 +11,20 @@
 第一个账号助力作者 其他依次助力CK1
 第一个CK失效会退出脚本
 ————————————————
-入口：[ 12.20~1.5 双旦寻宝 玩转大富翁 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=dfw2021121701vrb6n1c0ilo0uw&shareUuid=3f379c1bc2a74c57aeb84ca42d6dba47)]
+入口：[ 12.17~1.3 双旦寻宝 玩转大富翁 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=dfw202112nw2thjcb1rl48x88v&shareUuid=766b93afd0284cd3b85eb78493736a71)]
 
 请求太频繁会被黑ip
 过10分钟再执行
 
-cron:30 2,16 21-31,1-5 12,1 *
+cron:30 0,9 18-31,1-3 12,1 *
 ============Quantumultx===============
 [task_local]
-#12.20~1.5 双旦寻宝 玩转大富翁
-30 2,16 21-31,1-5 12,1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardLH31.js, tag=12.20~1.5 双旦寻宝 玩转大富翁, enabled=true
+#12.17~1.3 双旦寻宝 玩转大富翁
+30 0,9 18-31,1-3 12,1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardLH30.js, tag=12.17~1.3 双旦寻宝 玩转大富翁, enabled=true
 
 */
 
-const $ = new Env('12.20~1.5 双旦寻宝 玩转大富翁-2');
+const $ = new Env('12.17~1.3 双旦寻宝 玩转大富翁');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
@@ -54,8 +54,8 @@ let activityCookie =''
     });
     return;
   }
-  $.activityId = "dfw2021121701vrb6n1c0ilo0uw"
-  $.shareUuid = "3f379c1bc2a74c57aeb84ca42d6dba47"
+  $.activityId = "dfw202112nw2thjcb1rl48x88v"
+  $.shareUuid = "766b93afd0284cd3b85eb78493736a71"
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
 
   for (let i = 0; i < cookiesArr.length; i++) {
